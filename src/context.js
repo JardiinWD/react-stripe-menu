@@ -7,10 +7,12 @@ const AppContext = React.createContext()
 // My App provider
 export const AppProvider = ({ children }) => {
 
-    // useState method for Sidebar component
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true)
-    // useState method for Modal component
-    const [isSubmenuOpen, setIsSubmenuOpen] = useState(true)
+    // useState method for Sidebar component (initial state as false)
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+    // useState method for Modal component (initial state as false)
+    const [isSubmenuOpen, setIsSubmenuOpen] = useState(false)
+    // useState method for the submenu component (initial state an empty object)
+    const [location, setLocation] = useState({})
 
     // Handler Function for Sidebar Component
     const openSidebar = () => {
@@ -22,7 +24,13 @@ export const AppProvider = ({ children }) => {
     }
 
     // Handler Function for Sidebar Component
-    const openSubmenu = () => {
+    /**
+     * 
+     * @param {string} text // String that 
+     * @param {object} coords // Object of coordinates that will centerize my submenu 
+     */
+    const openSubmenu = (text, coords) => {
+        setLocation(coords)
         setIsSubmenuOpen(true)
     }
     // Handler Function for Sidebar Component
@@ -32,7 +40,7 @@ export const AppProvider = ({ children }) => {
 
     return (
         /* Passing value and state through props */
-        <AppContext.Provider value={{ isSidebarOpen, isSubmenuOpen, openSidebar, closeSidebar, openSubmenu, closeSubmenu }}>
+        <AppContext.Provider value={{ isSidebarOpen, isSubmenuOpen, openSidebar, closeSidebar, openSubmenu, closeSubmenu, location }}>
             {children}
         </AppContext.Provider>
     )
