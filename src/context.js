@@ -1,52 +1,39 @@
-import React, { useState, useContext } from 'react'
-import sublinks from './data'
+import React, { useState, useContext } from 'react';
+import sublinks from './data';
+const AppContext = React.createContext();
 
-// My main context variable
-const AppContext = React.createContext()
+const AppProvider = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+  const [page, setPage] = useState({ page: '', links: [] });
+  const [location, setLocation] = useState({});
 
-// My App provider
-export const AppProvider = ({ children }) => {
+  const openSidebar = () => {
+    setIsSidebarOpen(true);
+  };
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+  const openSubmenu = (text, coordinates) => {
+    const page = sublinks.find((link) => link.page === text);
+    setPage(page);
+    setLocation(coordinates);
+    setIsSubmenuOpen(true);
+  };
+  const closeSubmenu = () => {
+    setIsSubmenuOpen(false);
+  };
 
-    // useState method for Sidebar component (initial state as false)
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-    // useState method for Modal component (initial state as false)
-    const [isSubmenuOpen, setIsSubmenuOpen] = useState(false)
-    // useState method for the submenu component (initial state an empty object)
-    const [location, setLocation] = useState({})
+  return (
+    <AppContext.Provider value={{ isSidebarOpen, openSidebar, closeSidebar, isSubmenuOpen, openSubmenu, closeSubmenu, page, location, }}>
+      {children}
+    </AppContext.Provider>
+  );
+};
 
-    // Handler Function for Sidebar Component
-    const openSidebar = () => {
-        setIsSidebarOpen(true)
-    }
-    // Handler Function for Sidebar Component
-    const closeSidebar = () => {
-        setIsSidebarOpen(false)
-    }
 
-    // Handler Function for Sidebar Component
-    /**
-     * 
-     * @param {string} text // String that 
-     * @param {object} coords // Object of coordinates that will centerize my submenu 
-     */
-    const openSubmenu = (text, coords) => {
-        setLocation(coords)
-        setIsSubmenuOpen(true)
-    }
-    // Handler Function for Sidebar Component
-    const closeSubmenu = () => {
-        setIsSubmenuOpen(false)
-    }
-
-    return (
-        /* Passing value and state through props */
-        <AppContext.Provider value={{ isSidebarOpen, isSubmenuOpen, openSidebar, closeSidebar, openSubmenu, closeSubmenu, location }}>
-            {children}
-        </AppContext.Provider>
-    )
-}
-
-// Exporting the context Fn
 export const useGlobalContext = () => {
-    return useContext(AppContext)
-}
+  return useContext(AppContext);
+};
+
+export { AppContext, AppProvider };

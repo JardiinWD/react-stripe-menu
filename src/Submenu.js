@@ -1,29 +1,42 @@
-import React, { useState, useRef, useEffect, Fragment } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useGlobalContext } from './context'
 
-
 const Submenu = () => {
-
-  // Destructuring of global Context and take isSubOpen
-  const { isSubmenuOpen, location } = useGlobalContext()
-  // Setting a container with useRef
+  const { isSubmenuOpen, page: { page, links }, location, } = useGlobalContext()
   const container = useRef(null)
+  // useState method for the columns
+  const [columns, setColumns] = useState('col-2')
 
   useEffect(() => {
+    // Setting the columns to col-2
+    setColumns('col-2')
     const submenu = container.current
-    // Taking the coords of location
     const { center, bottom } = location
-    // Setting the coords for the submenu
-    submenu.style.left = `${center}px` // Centered to single link
+    submenu.style.left = `${center}px`
     submenu.style.top = `${bottom}px`
-  }, [location])
+    console.log(links)
+    if (links.length === 3) setColumns('col-3')
+    if (links.length > 3) setColumns('col-4')
+
+  }, [page, location, links])
+
 
   return (
-    <Fragment>
-      <aside className={`${isSubmenuOpen ? 'submenu show' : 'submenu'}`} ref={container}>
-        Submenu
-      </aside>
-    </Fragment>
+    /* isSubmenuOpen */
+    <aside className={`${isSubmenuOpen ? 'submenu show' : 'submenu'}`} ref={container}>
+      <section>
+        <h4>{page}</h4>
+        {/* submenu-center */}
+        <div className={`submenu-center ${columns}`}>
+          {links.map((link, index) => {
+            const { url, icon, label } = link
+            return (
+              <a key={index} href={url}> {icon} {label} </a>
+            )
+          })}
+        </div>
+      </section>
+    </aside>
   )
 }
 

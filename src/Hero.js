@@ -1,34 +1,33 @@
-import React, { Fragment } from 'react'
-import phoneImg from './images/phone.svg'
-import { useGlobalContext } from './context'
+import React from 'react';
+import phoneImg from './images/phone.svg';
+import { useGlobalContext } from './context';
 
 const Hero = () => {
-  const { closeSubmenu } = useGlobalContext()
-
+  const { closeSubmenu } = useGlobalContext();
   return (
-    <Fragment>
-      {/* hero */}
-      <section className="hero">
-        {/* hero-center */}
-        <div className="hero-center">
-          {/* hero-info */}
-          <article className="hero-info">
-            <h1>Payments infrastructure for the internet</h1>
-            <p>
-              Millions of companies of all sizes-from startups to Fortune 500s use
-              Stripe's software and APIs to accept payments, send payouts and manage
-              their businesses online.
-            </p>
-            <button className="btn">Start Now</button>
-          </article>
-          {/* hero-images */}
-          <article className="hero-images">
-            <img src={phoneImg} alt="Hero Img" />
-          </article>
-        </div>
-      </section>
-    </Fragment>
-  )
-}
+    /* hero */
+    <section className='hero' onMouseOver={closeSubmenu}>
+      {/* hero-center */}
+      <div className='hero-center'>
+        {/* hero-info */}
+        <article className='hero-info'>
+          <h1> Payments infrastructure <br /> for the internet </h1>
+          <p>
+            Millions of companies of all sizes—from startups to Fortune 500s—use
+            Stripe’s software and APIs to accept payments, send payouts, and
+            manage their businesses online.
+          </p>
+          {/* btn */}
+          <button className='btn'>Start now</button>
+        </article>
+        {/* hero-images */}
+        <article className='hero-images'>
+          {/* phone-img */}
+          <img src={phoneImg} className='phone-img' alt='phone' />
+        </article>
+      </div>
+    </section>
+  );
+};
 
-export default Hero
+export default Hero;
